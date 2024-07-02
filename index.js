@@ -7,6 +7,18 @@ const saltRounds = 10;
 const app = express()
 const PORT = 3000
 
+// Define the schema for the users table
+const userSchema = {
+  username: {
+    type: 'string',
+    unique: true,
+  },
+  password: {
+    type: 'string',
+  },
+};
+// Create the users table in the database
+
 app.use(express.json());
 app.use(cors());
 
@@ -50,20 +62,19 @@ app.get('/', async (req, res) => {
     } else {
         // Display sign up/login form
         res.send(`
-            <form action="/create" method="post">
-                <label for="user">Username:</label>
-                <input type="text" id="user" name="user"><br><br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password"><br><br>
-                <input type="submit" value="Sign Up">
-            </form>
-            <form action="/login" method="post">
-                <label for="user">Username:</label>
-                <input type="text" id="user" name="user"><br><br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password"><br><br>
-                <input type="submit" value="Login">
-            </form>
+        <!doctype html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Vite + React</title>
+          </head>
+          <body>
+            <div id="root"></div>
+            <script type="module" src="vite-project/src/main.jsx"></script>
+          </body>
+        </html>
         `);
     }
 });
