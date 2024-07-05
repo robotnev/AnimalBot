@@ -1,27 +1,6 @@
 import './App.css'
 import { useState } from 'react';
 import './index.css';
-import { PrismaClient } from '@prisma/client';
-
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-// Define the schema for the users table
-const userSchema = {
-  username: {
-    type: 'string',
-    unique: true,
-  },
-  password: {
-    type: 'string',
-  },
-};
-// Create the users table in the database
-await prisma.$create('users', userSchema);
-
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
 function App() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -36,7 +15,7 @@ function App() {
   };
 
   const handleCreate = () => {
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/create`, {
+    fetch(`${DATABASE_URL}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,6 +28,7 @@ function App() {
       .then((response) => {
         if (response.ok) {
           setResult('create success!');
+          <button onClick={handleCreate}>Create</button>
         } else {
           setResult('failed to create!');
         }
@@ -81,24 +61,5 @@ function App() {
       });
   };
 
-  return (
-
-    <div>
-      <div>
-        <label>user:</label>
-        <input onChange={handleChangeUser} value={user}></input>
-      </div>
-      <div>
-        <label>password:</label>
-        <input onChange={handleChangePassword} value={password}></input>
-      </div>
-      <button onClick={handleCreate}>Create</button>
-      <button onClick={handleLogin}>Login</button>
-      <div>
-        {result && <p>{result}</p>}
-      </div>
-    </div>
-  );
 }
-
 export default App;
