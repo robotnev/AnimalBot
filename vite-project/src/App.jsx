@@ -14,7 +14,7 @@ function App() {
     setPassword(e.target.value);
   };
 
-  const handleCreate = () => {
+  /*const handleCreate = () => {
     fetch(`${DATABASE_URL}/create`, {
       method: 'POST',
       headers: {
@@ -36,7 +36,7 @@ function App() {
       .catch((error) => {
         setResult(`Error: ${error.message}`);
       });
-  };
+  }; */
 
   const handleLogin = () => {
     fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/login`, {

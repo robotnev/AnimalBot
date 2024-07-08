@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 const Card2 = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ name: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleCardClick = () => {
     setIsFormVisible(true);
@@ -10,42 +11,54 @@ const Card2 = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch('/api/submit-form', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error));
+    if (formData.name && formData.password) {
+      fetch('http://localhost:3000/login', { method: 'POST', body: JSON.stringify(formData), headers: { 'Content-Type': 'application/json' } })
+        .then((response) => response.json())
+        .then((data) => console.log(local))
+        .catch((error) => console.error(error));
+    } else {
+      alert('Please enter your name and password');
+    }
+  };
+
+  const handleShowPasswordChange = (event) => {
+    setShowPassword(event.target.checked);
+  };
+  const handleNameChange = (event) => {
+    setFormData({ ...formData, name: event.target.value });
+  };
+  const handlePasswordChange = (event) => {
+    setFormData({ ...formData, password: event.target.value });
   };
 
   return (
     <div className="card" onClick={handleCardClick}>
-    {!isFormVisible && <h2>Login!</h2>}
-    {isFormVisible && (
-        <form>
-          <label>
-            Name:
+      {!isFormVisible && <h2>Login!</h2>}
+      {isFormVisible && (
+        <form onSubmit={handleSubmit}>
+          <label style={{ marginTop: '20px' }}>
+            User:
             <input
               type="text"
-              name="name"
-              onChange={(event) =>
-                setFormData({ ...formData, name: event.target.value })
-              }
+              name="user"
+              onChange={handleNameChange}
+            />
+          </label>
+          <br />
+          <label style={{ marginTop: '20px' }}>
+            Password:
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              onChange={handlePasswordChange}
             />
           </label>
           <br />
           <label>
-            Email:
+            Show Password:
             <input
-              type="email"
-              name="email"
-              onChange={(event) =>
-                setFormData({ ...formData, email: event.target.value })
-              }
+              type="checkbox"
+              onChange={handleShowPasswordChange}
             />
           </label>
           <br />
@@ -54,6 +67,6 @@ const Card2 = () => {
       )}
     </div>
   );
-};
+}
 
 export default Card2;
