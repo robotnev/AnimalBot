@@ -3,57 +3,65 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const Card1 = () => {
-    const [isFormVisible, setIsFormVisible] = useState(false);
-    const [formData, setFormData] = useState({});
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
-    const handleCardClick = () => {
-        setIsFormVisible(true);
-    };
+  const handleCardClick = () => {
+    setIsFormVisible(true);
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const { name, email } = formData;
-        const userSchema = {
-            name: { type: 'string' },
-            email: { type: 'string', unique: true },
-        };
-        prisma.$create('users', userSchema, { data: { name, email } })
-            .then((user) => console.log(user))
-            .catch((error) => console.error(error));
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("hi")
+    const { name, password } = formData;
+    fetch('http://localhost:3000/create', { method: 'POST', body: JSON.stringify(formData), headers: { 'Content-Type': 'application/json' } })
+  }
 
-    return (
-        <div className="card" onClick={handleCardClick}>
-            {!isFormVisible && <h2>Sign Up!</h2>}
-            {isFormVisible && (
-                <form>
-                    <label>
-                        Name:
-                        <input
-                            type="text"
-                            name="name"
-                            onChange={(event) =>
-                                setFormData({ ...formData, name: event.target.value })
-                            }
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Email:
-                        <input
-                            type="email"
-                            name="email"
-                            onChange={(event) =>
-                                setFormData({ ...formData, email: event.target.value })
-                            }
-                        />
-                    </label>
-                    <br />
-                    <input type="submit" value="Submit" />
-                </form>
-            )}
-        </div>
-    );
+  const handleShowPasswordChange = (event) => {
+    setShowPassword(event.target.checked);
+  }
+
+  return (
+    <div className="card" onClick={handleCardClick}>
+      {!isFormVisible && <h2>Sign Up!</h2>}
+      {isFormVisible && (
+        <form onSubmit={handleSubmit}>
+          <label style={{ marginTop: '20px' }}>
+            User:
+            <input
+              type="text"
+              name="name"
+              onChange={(event) =>
+                setFormData({ ...formData, name: event.target.value })
+              }
+            />
+          </label>
+          <br />
+          <label style={{ marginTop: '20px' }}>
+            Password:
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              onChange={(event) =>
+                setFormData({ ...formData, password: event.target.value })
+              }
+            />
+          </label>
+          <br />
+          <label>
+            Show Password:
+            <input
+              type="checkbox"
+              onChange={handleShowPasswordChange}
+            />
+          </label>
+          <br />
+          <input type="submit" value="Submit" />
+        </form>
+      )}
+    </div>
+  );
 };
 
 export default Card1;
