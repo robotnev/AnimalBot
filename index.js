@@ -11,6 +11,7 @@ const PORT = 3000
 const userSchema = {
   name: { type: 'string' },
   password: { type: 'string' },
+  categories: { type: 'array', items: { type: 'string' } }
 };
 
 app.use(express.json());
@@ -32,7 +33,8 @@ app.post("/create", async (req, res) => {
     const newUser = await prisma.user.create({
       data: {
         name: name,
-        password: hashedPassword
+        password: hashedPassword,
+        categories: req.body.categories
       }
     });
     console.log(newUser);
@@ -75,6 +77,11 @@ app.get('/', async (req, res) => {
     `);
   }
 });
+app.get('/checkName/:name', async (req, res) => {
+  const name = req.params.name;
+  const user = await prisma.user.findFirst({ where: { name } });
+  res.json({ exists: user !== null });
+});
 
 app.get('/new-page', (req, res) => {
   res.send('Welcome to the new page!');
@@ -99,8 +106,7 @@ app.post("/login", async (req, res) => {
   // Compare the provided password with the stored hash
   const isValid = await bcrypt.compare(password, userRecord.password);
   if (isValid) {
-    res.status(200).json({ });
-    //res.redirect('/new-page');
+    res.status(200).json({ success: true });
   } else {
     res.status(401).json({ error: "Invalid username or password" });
   }

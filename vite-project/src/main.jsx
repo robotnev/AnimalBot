@@ -7,7 +7,5 @@ import Card2 from './Card2.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
   <App />
-  <Card1/>
-  <Card2/>
   </React.StrictMode>,
 )

@@ -1,65 +1,26 @@
 import './App.css'
 import { useState } from 'react';
 import './index.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Card1 from './Card1';
+import Card2 from './Card2';
+
 function App() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [result, setResult] = useState('');
 
-  const handleChangeUser = (e) => {
-    setUser(e.target.value);
-  };
 
-  const handleChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
-
-  /*const handleCreate = () => {
-    fetch(`${DATABASE_URL}/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user,
-        password,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setResult('create success!');
-          <button onClick={handleCreate}>Create</button>
-        } else {
-          setResult('failed to create!');
-        }
-      })
-      .catch((error) => {
-        setResult(`Error: ${error.message}`);
-      });
-  }; */
-
-  const handleLogin = () => {
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user,
-        password,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setResult('login!');
-        } else {
-          setResult('failed to login!');
-        }
-      })
-      .catch((error) => {
-        setResult(`Error: ${error.message}`);
-      });
-  };
-
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<div className="cards">
+          <Card1 className="card" />
+          <Card2 className="card" />
+        </div>} />
+        <Route path="/home" element={<Card1 />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 export default App;

@@ -11,13 +11,39 @@ const Card1 = () => {
     setIsFormVisible(true);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("hi")
-    const { name, password } = formData;
-    fetch('http://localhost:3000/create', { method: 'POST', body: JSON.stringify(formData), headers: { 'Content-Type': 'application/json' } })
-  }
 
+    const handleSubmit = (event) => {
+      event.preventDefault();
+      const { name } = formData;
+      fetch(`http://localhost:3000/checkName/${name}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.exists) {
+            alert("Name already exists! Please choose a different name.");
+          } else {
+            const categories = [];
+            if (formData.category1 === true) {
+              categories.push('Electronics');
+            }
+            if (formData.category2 === true) {
+              categories.push('Jewelery');
+            }
+            if (formData.category3 === true) {
+              categories.push('Women Clothering');
+            }
+            if (formData.category4 === true) {
+              categories.push('Men Clothing');
+            }
+            formData.categories = categories;
+            fetch('http://localhost:3000/create', {
+              method: 'POST',
+              body: JSON.stringify(formData),
+              headers: { 'Content-Type': 'application/json' },
+            });
+          }
+        })
+        .catch((error) => console.error(error));
+    };
   const handleShowPasswordChange = (event) => {
     setShowPassword(event.target.checked);
   }
@@ -28,7 +54,7 @@ const Card1 = () => {
       {isFormVisible && (
         <form onSubmit={handleSubmit}>
           <label style={{ marginTop: '20px' }}>
-            User:
+            Username:
             <input
               type="text"
               name="name"
@@ -57,11 +83,57 @@ const Card1 = () => {
             />
           </label>
           <br />
+          <div className="categories">
+            <label>What items would you like to see?</label>
+            <label>
+              Electronics:
+              <input
+                type="checkbox"
+                name="category1"
+                onChange={(event) =>
+                  setFormData({ ...formData, category1: event.target.checked })
+                }
+              />
+            </label>
+            <br />
+            <label>
+              Jewelery:
+              <input
+                type="checkbox"
+                name="category2"
+                onChange={(event) =>
+                  setFormData({ ...formData, category2: event.target.checked })
+                }
+              />
+            </label>
+            <br />
+            <label>
+              Women Clothering:
+              <input
+                type="checkbox"
+                name="category3"
+                onChange={(event) =>
+                  setFormData({ ...formData, category3: event.target.checked })
+                }
+              />
+            </label>
+            <br />
+            <label>
+              Men Clothing:
+              <input
+                type="checkbox"
+                name="category4"
+                onChange={(event) =>
+                  setFormData({ ...formData, category4: event.target.checked })
+                }
+              />
+            </label>
+          </div>
           <input type="submit" value="Submit" />
         </form>
       )}
     </div>
-  );
+  )
 };
 
 export default Card1;

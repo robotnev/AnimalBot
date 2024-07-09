@@ -14,13 +14,18 @@ const Card2 = () => {
     if (formData.name && formData.password) {
       fetch('http://localhost:3000/login', { method: 'POST', body: JSON.stringify(formData), headers: { 'Content-Type': 'application/json' } })
         .then((response) => response.json())
-        .then((data) => console.log(local))
+        .then((data) => {
+          if (data.success) {
+            window.location.href = 'http://localhost:5173/home'; // Redirect to the dashboard page
+          } else {
+            alert('Invalid name or password');
+          }
+        })
         .catch((error) => console.error(error));
     } else {
       alert('Please enter your name and password');
     }
   };
-
   const handleShowPasswordChange = (event) => {
     setShowPassword(event.target.checked);
   };
@@ -37,7 +42,7 @@ const Card2 = () => {
       {isFormVisible && (
         <form onSubmit={handleSubmit}>
           <label style={{ marginTop: '20px' }}>
-            User:
+            Enter your Username:
             <input
               type="text"
               name="user"
