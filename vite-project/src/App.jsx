@@ -4,7 +4,9 @@ import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Card1 from './Card1';
 import Card2 from './Card2';
-
+import Loading from './Loading';
+import Yes from './Yes';
+import Taskbar from './Taskbar';
 function App() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -13,12 +15,13 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Taskbar/>
       <Routes>
         <Route path="/" element={<div className="cards">
           <Card1 className="card" />
           <Card2 className="card" />
         </div>} />
-        <Route path="/home" element={<Card1 />} />
+        <Route path="/home" element={<Yes/>} />
       </Routes>
     </BrowserRouter>
   );

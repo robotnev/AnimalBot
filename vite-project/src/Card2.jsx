@@ -4,6 +4,7 @@ const Card2 = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formData, setFormData] = useState({ name: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState(''); // Add this state variable to store the logged-in username
 
   const handleCardClick = () => {
     setIsFormVisible(true);
@@ -16,6 +17,7 @@ const Card2 = () => {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
+            setUsername(formData.name); // Set the logged-in username
             window.location.href = 'http://localhost:5173/home'; // Redirect to the dashboard page
           } else {
             alert('Invalid name or password');

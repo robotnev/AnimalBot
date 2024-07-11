@@ -60,6 +60,7 @@ h1 {
   line-height: 1.1;
 }
 
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -72,6 +73,21 @@ button {
   transition: border-color 0.25s;
 }
 
+.taskbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: grey;
+  color: #fff;
+  font-family: inherit;
+  font-size: large;
+  display: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
 button:hover {
   border-color: #646cff;
 }
@@ -79,6 +95,30 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.loader {
+  border: 16px solid white;
+  /* Light grey */
+  border-top: 16px solid grey;
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  border-bottom: 16px solid grey;
+  animation: spin 2s linear infinite;
+}
+
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-color-scheme: light) {
