@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-const Card2 = () => {
+const Card2 = (formData, setFormData) => {
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [formData, setFormData] = useState({ name: '', password: '' });
+  //const [formData, setFormData] = useState({ name: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState(''); // Add this state variable to store the logged-in username
 
@@ -77,3 +77,5 @@ const Card2 = () => {
 }
 
 export default Card2;
+
+

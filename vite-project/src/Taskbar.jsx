@@ -1,10 +1,9 @@
 import React from 'react';
-import { username } from 'Card2.jsx';
+//import { handleNameChange } from './Card2';
 
-const Taskbar = ({ username }) => {
+const Taskbar = () => {
   return (
     <div>
-      <span>{username}</span>
       <button onClick={() => alert('Logged out!')}>Logout</button>
     </div>
   );

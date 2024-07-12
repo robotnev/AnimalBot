@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 import getData from './options';
+import Taskbar from './Taskbar';
 
 function Yes() {
   const [data, setData] = useState([]);
@@ -19,9 +20,7 @@ function Yes() {
 
   return (
     <div>
-      {data.forEach((item) => (
-        <div key={item.id}>{item.name}</div>
-      ))}
+      <Taskbar />
     </div>
   );
 }
