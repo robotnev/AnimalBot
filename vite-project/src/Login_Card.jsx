@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-const Card2 = (formData, setFormData) => {
+const Login_Card = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
-  //const [formData, setFormData] = useState({ name: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState(''); // Add this state variable to store the logged-in username
 
@@ -16,7 +16,7 @@ const Card2 = (formData, setFormData) => {
       fetch('http://localhost:3000/login', { method: 'POST', body: JSON.stringify(formData), headers: { 'Content-Type': 'application/json' } })
         .then((response) => response.json())
         .then((data) => {
-          if (data.success) {
+          if (data) {
             setUsername(formData.name); // Set the logged-in username
             window.location.href = 'http://localhost:5173/home'; // Redirect to the dashboard page
           } else {
@@ -28,6 +28,7 @@ const Card2 = (formData, setFormData) => {
       alert('Please enter your name and password');
     }
   };
+
   const handleShowPasswordChange = (event) => {
     setShowPassword(event.target.checked);
   };
@@ -44,7 +45,7 @@ const Card2 = (formData, setFormData) => {
       {isFormVisible && (
         <form onSubmit={handleSubmit}>
           <label style={{ marginTop: '20px' }}>
-            Enter your Username:
+            User:
             <input
               type="text"
               name="user"
@@ -76,6 +77,4 @@ const Card2 = (formData, setFormData) => {
   );
 }
 
-export default Card2;
-
-
+export default Login_Card;

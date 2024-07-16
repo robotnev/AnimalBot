@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-const Card1 = () => {
+const Signup_Card = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [formData, setFormData] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -12,38 +12,38 @@ const Card1 = () => {
   };
 
 
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      const { name } = formData;
-      fetch(`http://localhost:3000/checkName/${name}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.exists) {
-            alert("Name already exists! Please choose a different name.");
-          } else {
-            const categories = [];
-            if (formData.category1 === true) {
-              categories.push('Electronics');
-            }
-            if (formData.category2 === true) {
-              categories.push('Jewelery');
-            }
-            if (formData.category3 === true) {
-              categories.push('Women Clothering');
-            }
-            if (formData.category4 === true) {
-              categories.push('Men Clothing');
-            }
-            formData.categories = categories;
-            fetch('http://localhost:3000/create', {
-              method: 'POST',
-              body: JSON.stringify(formData),
-              headers: { 'Content-Type': 'application/json' },
-            });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const { name } = formData;
+    fetch(`http://localhost:3000/checkName/${name}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.exists) {
+          alert("Name already exists! Please choose a different name.");
+        } else {
+          const categories = [];
+          if (formData.category1 === true) {
+            categories.push('Electronics');
           }
-        })
-        .catch((error) => console.error(error));
-    };
+          if (formData.category2 === true) {
+            categories.push('Jewelery');
+          }
+          if (formData.category3 === true) {
+            categories.push('Women Clothering');
+          }
+          if (formData.category4 === true) {
+            categories.push('Men Clothing');
+          }
+          formData.categories = categories;
+          fetch('http://localhost:3000/create', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+      })
+      .catch((error) => console.error(error));
+  };
   const handleShowPasswordChange = (event) => {
     setShowPassword(event.target.checked);
   }
@@ -136,4 +136,4 @@ const Card1 = () => {
   )
 };
 
-export default Card1;
+export default Signup_Card;
