@@ -18,20 +18,33 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
 
-.card {
-  background-color: #fff;
-  border: 1px solid black;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.categories {
+  margin-top: 10px;
 }
 
-.card-body {
-  padding: 20px;
+.cards {
+  display: flex;
+  flex-direction: row;
+}
+
+.card {
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid black;
+  padding: 100px;
+  margin: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  display: flex;
+  flex-direction: row;
+
 }
 
 body {
@@ -47,6 +60,7 @@ h1 {
   line-height: 1.1;
 }
 
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -58,12 +72,53 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
+.taskbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: grey;
+  color: #fff;
+  font-family: inherit;
+  font-size: large;
+  display: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.loader {
+  border: 16px solid white;
+  /* Light grey */
+  border-top: 16px solid grey;
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  border-bottom: 16px solid grey;
+  animation: spin 2s linear infinite;
+}
+
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -71,9 +126,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
