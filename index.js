@@ -3,6 +3,7 @@ const prisma = new PrismaClient()
 var cors = require('cors')
 const express = require('express')
 const bcrypt = require('bcrypt');
+const session = require('express-session');
 const saltRounds = 10;
 const app = express()
 const PORT = 3000
@@ -13,6 +14,36 @@ const userSchema = {
   password: { type: 'string' },
   categories: { type: 'array', items: { type: 'string' } }
 };
+// For images
+app.get('/image-proxy/:imageUrl', (req, res) => {
+  const imageUrl = req.params.imageUrl;
+  const options = {
+    url: imageUrl,
+    headers: {
+      'User-Agent': 'Your User Agent String',
+    },
+  };
+
+  request(options, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      res.set('Content-Type', response.headers['content-type']);
+      res.set('Content-Length', response.headers['content-length']);
+      res.send(body);
+    } else {
+      res.status(404).send('Image not found');
+    }
+  });
+});
+
+app.use(session({
+  secret: 'y111',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: true,
+    maxAge: 3600000 // 1 hour
+  }
+}));
 
 app.use(express.json());
 app.use(cors());
@@ -45,7 +76,6 @@ app.post("/create", async (req, res) => {
   }
 });
 
-
 app.get('/', async (req, res) => {
   const { name, password } = req.query;
   if (name && password) {
@@ -59,24 +89,31 @@ app.get('/', async (req, res) => {
     const isValid = await bcrypt.compare(password, userRecord.password);
     if (isValid) {
       res.status(200).json({});
+
     } else {
       res.status(401).json({ error: "Invalid username or password" });
     }
-  } else {
-    // Display sign up/login form
-    res.send(`
-      <!doctype html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-         <title>Hello</title>
-        </head>
-        <body>
-        </body>
-      </html>
-    `);
   }
 });
+app.get('/profile', (req, res) => {
+  // Access session data
+  const user = req.session.user;
+  res.send(`Welcome ${user.username}`);
+});
+
+app.get('/logout',
+  (req, res) => {
+    // Destroy session
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error logging out');
+      } else {
+        res.send('Logged out');
+      }
+    });
+  });
+
 app.get('/checkName/:name', async (req, res) => {
   const name = req.params.name;
   const user = await prisma.user.findFirst({ where: { name } });
@@ -106,7 +143,9 @@ app.post("/login", async (req, res) => {
   // Compare the provided password with the stored hash
   const isValid = await bcrypt.compare(password, userRecord.password);
   if (isValid) {
-    res.status(200).json({ success: true });
+    res.status(200).json({});
+    req.session.user = userRecord; // Store the user data in the session
+    //res.send('Logged in');
   } else {
     res.status(401).json({ error: "Invalid username or password" });
   }

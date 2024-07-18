@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 import Taskbar from './Taskbar';
@@ -15,7 +16,8 @@ function Yes() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setData(data);
+        console.log(data)
+        setData(data.search_results[0].item);
         setLoading(false);
       })
       .catch((error) => console.log(error));
@@ -27,16 +29,20 @@ function Yes() {
 
   // Return only the first item in the data array
   if (Array.isArray(data)) {
-    const firstItem = data[0];
+    const firstTenItems = data.slice(0, 10);
     return (
       <div>
         <Taskbar />
-        <p>{firstItem.name}</p>
+        {firstTenItems.map((item) => (
+          <div key={item.id}>
+            <p>{item.title}</p>
+            <img src={`${item.thumbnail}`} />
+          </div>
+        ))}
       </div>
     );
   } else {
     return <div>Error: Data is not an array</div>;
   }
 }
-
 export default Yes;

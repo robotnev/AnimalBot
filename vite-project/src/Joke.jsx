@@ -13,7 +13,6 @@ function Joke() {
   }, []);
   return (
     <div>
-      <h2>Joke of the day:</h2>
       {joke && <p>{joke}</p>}
     </div>
   );
