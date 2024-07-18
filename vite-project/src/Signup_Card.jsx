@@ -34,6 +34,9 @@ const Signup_Card = () => {
           if (formData.category4 === true) {
             categories.push('Men Clothing');
           }
+          if (formData.category5 === true) {
+            categories.push('Gardening');
+          }
           formData.categories = categories;
           fetch('http://localhost:3000/create', {
             method: 'POST',
@@ -84,7 +87,7 @@ const Signup_Card = () => {
           </label>
           <br />
           <div className="categories">
-            <label>What items would you like to see?</label>
+          <div className="category-wrap">
             <label>
               Electronics:
               <input
@@ -108,7 +111,7 @@ const Signup_Card = () => {
             </label>
             <br />
             <label>
-              Women Clothering:
+              Women Clothing:
               <input
                 type="checkbox"
                 name="category3"
@@ -125,9 +128,21 @@ const Signup_Card = () => {
                 name="category4"
                 onChange={(event) =>
                   setFormData({ ...formData, category4: event.target.checked })
-                }
+                } />
+                </label>
+                <br />
+                <label>
+                  Gardening:
+                  <input
+                    type="checkbox"
+                    name="category5"
+                    onChange={(event) =>
+                      setFormData({ ...formData, category5: event.target.checked })
+                    }
+
               />
             </label>
+          </div>
           </div>
           <input type="submit" value="Submit" />
         </form>

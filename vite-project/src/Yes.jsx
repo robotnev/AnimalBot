@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Loading from './Loading';
 import Taskbar from './Taskbar';
@@ -27,18 +26,21 @@ function Yes() {
     return <Loading />;
   }
 
-  // Return only the first item in the data array
+
+  // Return only the first ten items in the data array
   if (Array.isArray(data)) {
     const firstTenItems = data.slice(0, 10);
     return (
       <div>
         <Taskbar />
-        {firstTenItems.map((item) => (
-          <div key={item.id}>
+        <div className="grid-container">
+          {firstTenItems.map((item) => (
+            <div key={item.id} className="grid-item">
             <p>{item.title}</p>
-            <img src={`${item.thumbnail}`} />
-          </div>
-        ))}
+              <img src={`${item.thumbnail}`} />
+            </div>
+          ))}
+        </div>
       </div>
     );
   } else {

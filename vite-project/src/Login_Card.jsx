@@ -18,7 +18,7 @@ const Login_Card = () => {
         .then((data) => {
           if (data) {
             setUsername(formData.name); // Set the logged-in username
-            window.location.href = 'http://localhost:5173/home'; // Redirect to the dashboard page
+            window.location.href = `http://localhost:5173/home?username=${formData.name}`; // Redirect to the dashboard page
           } else {
             alert('Invalid name or password');
           }

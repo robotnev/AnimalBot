@@ -11,6 +11,17 @@ body {
 
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    background-color: white;
+}
+
+.grid-item {
+    padding: 17px;
+    border: 10px solid pink;
+}
 
 .card {
     background-color: grey;

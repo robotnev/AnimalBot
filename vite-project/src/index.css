@@ -13,6 +13,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  background-color: white;
+  border: 10px solid pink;
+}
+
+.grid-item {
+  padding: 17px;
+  border: 10px solid pink;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -24,12 +37,15 @@ a:hover {
 }
 
 .categories {
-  margin-top: 10px;
+  display: grid;
+  gap: 10px;
 }
+
 
 .cards {
   display: flex;
   flex-direction: row;
+
 }
 
 .card {
