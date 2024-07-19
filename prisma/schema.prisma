@@ -9,6 +9,8 @@ datasource db {
 
 
 model User {
-  user            String @id
-  hashedPassword  String
+  id       String   @id @default(cuid())
+  name     String
+  password    String
+  categories String[]
 }
