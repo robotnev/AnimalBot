@@ -6,6 +6,16 @@ function Yes() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+
+  const updateUser = (newUser) => {
+    setUser(newUser);
+  };
+
+
   useEffect(() => {
     fetch("https://api.ecommerceapi.io/walmart_search?api_key=669599d40eca9387990d6162&url=https://www.walmart.com/search?query=father%27s%20day%20gift%20ideas", {
       method: "GET",
@@ -25,7 +35,6 @@ function Yes() {
   if (loading) {
     return <Loading />;
   }
-
 
   // Return only the first ten items in the data array
   if (Array.isArray(data)) {

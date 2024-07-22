@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
-
+// Login_Card.jsx
+import React, { useState, useContext } from 'react';
+import { UserContext } from './UserContext';
 const Login_Card = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const { updateUser } = useContext(UserContext);
   const [formData, setFormData] = useState({ name: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState(''); // Add this state variable to store the logged-in username
-
   const handleCardClick = () => {
     setIsFormVisible(true);
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     if (formData.name && formData.password) {
-      fetch('http://localhost:3000/login', { method: 'POST', body: JSON.stringify(formData), headers: { 'Content-Type': 'application/json' } })
-        .then((response) => response.json())
+      fetch('http://localhost:3000/login', {
+        method: 'POST',
+        body: JSON.stringify({ username: formData.name, password: formData.password }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then((response) => response.json())
         .then((data) => {
           if (data) {
-            setUsername(formData.name); // Set the logged-in username
+            updateUser(formData.name); // Update the user context
             window.location.href = `http://localhost:5173/home?username=${formData.name}`; // Redirect to the dashboard page
           } else {
             alert('Invalid name or password');
@@ -28,7 +30,6 @@ const Login_Card = () => {
       alert('Please enter your name and password');
     }
   };
-
   const handleShowPasswordChange = (event) => {
     setShowPassword(event.target.checked);
   };
@@ -38,7 +39,6 @@ const Login_Card = () => {
   const handlePasswordChange = (event) => {
     setFormData({ ...formData, password: event.target.value });
   };
-
   return (
     <div className="card" onClick={handleCardClick}>
       {!isFormVisible && <h2>Login!</h2>}
