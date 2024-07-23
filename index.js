@@ -50,21 +50,17 @@ app.use(cors());
 
 app.post("/create", async (req, res) => {
   const { name, password } = req.body;
-  console.log(name, password)
   if (!name || !password) {
     return res.status(400).json({ error: "Invalid request" });
   }
-
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-
+  const newPassword = await bcrypt.hash(password, saltRounds);
   // Create a new user
   try {
 
     const newUser = await prisma.user.create({
       data: {
         name: name,
-        password: hashedPassword,
+        password: newPassword,
         categories: req.body.categories
       }
     });
@@ -124,28 +120,33 @@ app.get('/new-page', (req, res) => {
   res.send('Welcome to the new page!');
 });
 
-app.post("/login", async (req, res) => {
-  const { name, password } = req.body;
-
-  // Validate and sanitize user input
-  if (!name || !password) {
-    return res.status(400).json({ error: "Invalid request 1" });
-  }
-
-  // Find the user record
+app.post("/getcat", async (req, res) => {
+  const { name } = req.body;
+  console.log(name)
   const userRecord = await prisma.user.findFirst({
     where: { name }
+  });
+  // Choose a random category
+  const categories = userRecord.categories;
+  res.status(200).json({ categories });
+});
+
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  // Validate and sanitize user input
+  const userRecord = await prisma.user.findFirst({
+    where: { name: username }
   });
   if (!userRecord) {
     return res.status(401).json({ error: "Invalid username or password" });
   }
-
-  // Compare the provided password with the stored hash
+  // Hash the provided password
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
   const isValid = await bcrypt.compare(password, userRecord.password);
+  console.log(isValid)
   if (isValid) {
-    res.status(200).json({});
     req.session.user = userRecord; // Store the user data in the session
-    //res.send('Logged in');
+    res.status(200).json({});
   } else {
     res.status(401).json({ error: "Invalid username or password" });
   }

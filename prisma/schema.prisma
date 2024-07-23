@@ -12,5 +12,5 @@ model User {
   name       String
   password   String
   categories String[]
-  dollars    Int
+  dollars    Int @default(0)
 }

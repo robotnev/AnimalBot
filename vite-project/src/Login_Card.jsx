@@ -1,5 +1,5 @@
 // Login_Card.jsx
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext} from 'react';
 import { UserContext } from './UserContext';
 const Login_Card = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -16,16 +16,25 @@ const Login_Card = () => {
         method: 'POST',
         body: JSON.stringify({ username: formData.name, password: formData.password }),
         headers: { 'Content-Type': 'application/json' }
-      }).then((response) => response.json())
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
         .then((data) => {
           if (data) {
             updateUser(formData.name); // Update the user context
-            window.location.href = `http://localhost:5173/home?username=${formData.name}`; // Redirect to the dashboard page
+            window.location.href = `http://localhost:5173/home`; // Redirect to the dashboard page
           } else {
             alert('Invalid name or password');
           }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error);
+          alert('Invalid name or password');
+        });
     } else {
       alert('Please enter your name and password');
     }
@@ -76,5 +85,4 @@ const Login_Card = () => {
     </div>
   );
 }
-
 export default Login_Card;
