@@ -50,9 +50,9 @@ a:hover {
 
 .card {
   align-items: center;
-  background-color: #fff;
+  background-color: white;
   border: 1px solid black;
-  padding: 100px;
+  padding: 150px;
   margin: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
@@ -63,9 +63,12 @@ a:hover {
 
 }
 
+
+
 body {
   margin: 0;
   display: flex;
+  background-color: pink;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;

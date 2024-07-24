@@ -49,11 +49,13 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/create", async (req, res) => {
-  const { name, password } = req.body;
-  if (!name || !password) {
+  const { name, password, moneyAmount } = req.body;
+  if (!name || !password || !moneyAmount) {
     return res.status(400).json({ error: "Invalid request" });
   }
   const newPassword = await bcrypt.hash(password, saltRounds);
+  const who = await(moneyAmount); // use the moneyAmount value from the request body
+  const amount = parseFloat(who);
   // Create a new user
   try {
 
@@ -61,7 +63,8 @@ app.post("/create", async (req, res) => {
       data: {
         name: name,
         password: newPassword,
-        categories: req.body.categories
+        categories: req.body.categories,
+        dollars: amount
       }
     });
     console.log(newUser);
@@ -122,13 +125,22 @@ app.get('/new-page', (req, res) => {
 
 app.post("/getcat", async (req, res) => {
   const { name } = req.body;
-  console.log(name)
+
   const userRecord = await prisma.user.findFirst({
     where: { name }
   });
   // Choose a random category
   const categories = userRecord.categories;
   res.status(200).json({ categories });
+});
+
+app.post("/getmoney", async (req, res) => {
+  const { name } = req.body;
+  const userRecord = await prisma.user.findFirst({
+    where: { name }
+  });
+  const money = userRecord.dollars;
+  res.status(200).json(money);
 });
 
 app.post("/login", async (req, res) => {
@@ -143,7 +155,7 @@ app.post("/login", async (req, res) => {
   // Hash the provided password
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   const isValid = await bcrypt.compare(password, userRecord.password);
-  console.log(isValid)
+
   if (isValid) {
     req.session.user = userRecord; // Store the user data in the session
     res.status(200).json({});

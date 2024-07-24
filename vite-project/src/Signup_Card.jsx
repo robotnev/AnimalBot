@@ -37,6 +37,7 @@ const Signup_Card = () => {
             if (category.value === true) {
               categories.push(category.name);
             }
+            formData.moneyAmount = formData.moneyAmount;
           }
           formData.categories = categories;
           fetch('http://localhost:3000/create', {
@@ -88,6 +89,17 @@ const Signup_Card = () => {
             <input
               type="checkbox"
               onChange={handleShowPasswordChange}
+            />
+          </label>
+          <label>
+            Money Amount:
+            <input
+              type="number"
+              name="moneyAmount"
+              step="0.01"
+              onChange={(event) =>
+                setFormData({ ...formData, moneyAmount: event.target.value })
+              }
             />
           </label>
           <br />
