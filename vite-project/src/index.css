@@ -15,6 +15,7 @@
 
 .grid-container {
   display: grid;
+  z-index: 3;
   margin-top: 60px;
   /* Add this line */
   grid-template-columns: repeat(2, 1fr);
@@ -24,7 +25,7 @@
 }
 
 .grid-item {
-  padding: 17px;
+  padding: 50px;
   border: 10px solid pink;
   position: relative;
 }
@@ -34,17 +35,21 @@
   /* Change display to block to show the details */
 }
 
+
+
 .details {
+  /* Add a lower z-index value for the grid items */
   display: none;
   position: absolute;
-  top: 25%;
-  left: 25%;
+  top: 40%;
+  left: 55%;
   width: 40%;
   height: 40%;
   font-style: bold;
   color: black;
   padding: 10px;
 }
+
 
 
 a {
@@ -83,11 +88,6 @@ a:hover {
   flex-direction: row;
 
 }
-
-
-
-
-
 
 body {
   margin: 0;
@@ -129,6 +129,10 @@ button {
   display: center;
   align-items: center;
   justify-content: space-between;
+  z-index: 9999;
+  /* Add this line */
+  pointer-events: none;
+
 }
 
 button:hover {
@@ -142,9 +146,7 @@ button:focus-visible {
 
 .loader {
   border: 16px solid white;
-  /* Light grey */
   border-top: 16px solid grey;
-  /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;

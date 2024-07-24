@@ -86,11 +86,17 @@ button:hover {
   margin: 24px 0 12px 0;
 }
 
+.img:hover {
+  cursor: url("glass.jpg");
+}
+
 /* Avatar image */
 img.avatar {
   width: 40%;
   border-radius: 50%;
 }
+
+
 
 /* Add padding to containers */
 .container {

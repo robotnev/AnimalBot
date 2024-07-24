@@ -10,6 +10,7 @@ function Yes() {
   const updateUser = (newUser) => {
     setUser(newUser);
   };
+
   const { user } = useContext(UserContext);
   let moneyData;
   let oneCategory;
@@ -75,7 +76,16 @@ function Yes() {
         {items.slice(0, 10).map((item) => (
           <div key={item.id} className="grid-item">
             <p>{item.title}</p>
-            <img src={`${item.thumbnail}`} />
+            <img
+              src={item.thumbnail}
+              className="image"
+              onMouseOver={(e) => {
+                e.target.style.cursor = 'zoom-in';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.cursor = 'default';
+              }}
+            />
             <div className="details">
               <p>{"Average Rating: " + item.rating}</p>
               <p>{"Shipping Details:" + item.shipping}</p>
