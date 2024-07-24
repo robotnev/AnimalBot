@@ -2,17 +2,17 @@ import React, { useState, useContext, useEffect } from 'react';
 import Loading from './Loading';
 import Taskbar from './Taskbar';
 import { UserContext } from './UserContext';
-
 function Yes() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [categories, setCategories] = useState();
-  const [moneymax, setMoneyMax] = useState(0.00);
-
+  const [moneyMax, setMoneyMax] = useState(0.0);
   const updateUser = (newUser) => {
     setUser(newUser);
   };
   const { user } = useContext(UserContext);
+  let moneyData;
+  let oneCategory;
   useEffect(() => {
     async function fetchData() {
       try {
@@ -26,7 +26,7 @@ function Yes() {
         setCategories(data.categories);
         // Select a random category
         const randomIndex = Math.floor(Math.random() * data.categories.length);
-        const oneCategory = data.categories[randomIndex];
+        oneCategory = data.categories[randomIndex];
         console.log(oneCategory); // Output the selected category
         // Make a second request to get the moneymax value
         const moneyResponse = await fetch('http://localhost:3000/getmoney', {
@@ -34,20 +34,37 @@ function Yes() {
           body: JSON.stringify({ name: user }),
           headers: { 'Content-Type': 'application/json' }
         });
-        const moneyData = await moneyResponse.json();
-        console.log(moneyData)
+        moneyData = await moneyResponse.json();
+        console.log("1" + moneyData)
         setMoneyMax(moneyData.money);
+        console.log(moneyData)
       } catch (error) {
         console.error(error);
       }
     }
     fetchData(); // Call the fetchData function
   }, [user]);
-
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("hello")
+      console.log(moneyData)
+      console.log(oneCategory)
+      const url = `https://api.ecommerceapi.io/walmart_search?api_key=669599d40eca9387990d6162&url=https://www.walmart.com/search?query=${oneCategory}&price_max=${moneyData}`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data.search_results[0].item);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+        });
+    }, 5000); // Add dependencies
+  }, []);
   if (loading) {
     return <Loading />;
   }
-
   return (
     <div>
       <Taskbar />
