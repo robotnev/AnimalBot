@@ -15,6 +15,8 @@
 
 .grid-container {
   display: grid;
+  margin-top: 60px;
+  /* Add this line */
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(5, 1fr);
   background-color: white;
@@ -24,7 +26,26 @@
 .grid-item {
   padding: 17px;
   border: 10px solid pink;
+  position: relative;
 }
+
+.grid-item:hover .details {
+  display: block;
+  /* Change display to block to show the details */
+}
+
+.details {
+  display: none;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: 40%;
+  height: 40%;
+  font-style: bold;
+  color: black;
+  padding: 10px;
+}
+
 
 a {
   font-weight: 500;
@@ -62,6 +83,9 @@ a:hover {
   flex-direction: row;
 
 }
+
+
+
 
 
 
