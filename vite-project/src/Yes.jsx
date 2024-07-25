@@ -46,9 +46,25 @@ function Yes() {
                 if (item.current_price !== undefined) {
                   const currentPrice = item.current_price.match(/\d+(\.\d+)?/)[0];
                   if (currentPrice < moneyData) {
-                    item.total_score = (item.rating >= 4 ? 2 : 0);
-                    console.log(item.title + item.total_score)
-                    if (item.total_score) {
+                    let totalScore = 0;
+                    if (item.availability_status === "In stock") {
+                      totalScore += 2;
+                    }
+                    if (item.sponsored) {
+                      totalScore += 2;
+                    }
+                    if (item.rating >= 4.7) {
+                      totalScore += 3;
+                    } else if (item.rating >= 4.2) {
+                      totalScore += 2;
+                    } else if (item.rating >= 3.5) {
+                      totalScore += 1;
+                    }
+                    if (item.shipping.includes("Free shipping")) {
+                      totalScore += 2;
+                    }
+                    item.total_score = totalScore;
+                    if (item.total_score > 0) {
                       scoredItems.push(item);
                     }
                   }
