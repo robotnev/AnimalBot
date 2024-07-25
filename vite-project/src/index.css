@@ -36,6 +36,18 @@
 }
 
 
+.details {
+  /* Add a lower z-index value for the grid items */
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 55%;
+  width: 40%;
+  height: 40%;
+  font-style: bold;
+  color: black;
+  padding: 10px;
+}
 
 .details {
   /* Add a lower z-index value for the grid items */
@@ -67,25 +79,44 @@ a:hover {
   gap: 10px;
 }
 
-
 .cards {
   display: flex;
-  flex-direction: row;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slide-in 2.5s forwards;
+}
 
+@keyframes slide-in {
+  from {
+    left: -80%;
+  }
+
+  to {
+    left: 50%;
+  }
+}
+
+.user {
+  font-weight: bold;
+  font-size: 22px;
+  position: absolute;
+  top: 25%;
 }
 
 .card {
   align-items: center;
+  justify-content: center;
   background-color: white;
   border: 1px solid black;
   padding: 150px;
+  width: 125px;
+  height: 125px;
   margin: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-}
-
-.card {
   display: flex;
-  flex-direction: row;
+  font-size: 16px;
 
 }
 
@@ -113,6 +144,7 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
+  background-color: white;
   transition: border-color 0.25s;
 }
 
@@ -130,8 +162,6 @@ button {
   align-items: center;
   justify-content: space-between;
   z-index: 9999;
-  /* Add this line */
-  pointer-events: none;
 
 }
 
@@ -145,15 +175,20 @@ button:focus-visible {
 }
 
 .loader {
+  align-items: center;
   border: 16px solid white;
   border-top: 16px solid grey;
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
   width: 120px;
   height: 120px;
   border-bottom: 16px solid grey;
   animation: spin 2s linear infinite;
 }
-
 
 
 @keyframes spin {
@@ -176,7 +211,5 @@ button:focus-visible {
     color: #747bff;
   }
 
-  button {
-    background-color: #f9f9f9;
-  }
+
 }

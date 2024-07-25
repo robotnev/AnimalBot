@@ -15,7 +15,7 @@ const Signup_Card = () => {
   const handleCardClick = () => {
     setIsFormVisible(true);
   };
-
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,15 +37,21 @@ const Signup_Card = () => {
             if (category.value === true) {
               categories.push(category.name);
             }
-            formData.moneyAmount = formData.moneyAmount;
+          }
+          if (categories.length === 0) {
+            alert("Please select at least one category!");
+            return;
           }
           formData.categories = categories;
           fetch('http://localhost:3000/create', {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: { 'Content-Type': 'application/json' },
-          });
-          setIsSubmitted(true); // set isSubmitted to true after form submission
+          })
+            .then(() => {
+              setIsSubmitted(true); // set isSubmitted to true after form submission
+            })
+            .catch((error) => console.error(error));
         }
       })
       .catch((error) => console.error(error));

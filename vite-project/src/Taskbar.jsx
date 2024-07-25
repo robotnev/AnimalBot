@@ -16,7 +16,7 @@ const Taskbar = () => {
   return (
     <div className="taskbar" style={{ backgroundColor: '#ccc', padding: '10px 20px' }}>
       <button onClick={logout} style={{ float: 'right', marginRight: '40px' }}>Logout</button>
-    <div>{user}</div>
+      <div class="user">{user}</div>
     </div>
   );
 };
