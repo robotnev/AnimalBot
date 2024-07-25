@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Signup_Card from './Signup_Card';
 import Login_Card from './Login_Card';
-import Yes from './Yes';
+import Api from './api';
 import { UserContext } from './UserContext';
 import Taskbar from './Taskbar';
 
@@ -32,7 +32,7 @@ function App() {
             <Signup_Card className="card" />
             <Login_Card className="card" />
           </div>} />
-          <Route path="/home" element={<Yes />} />
+          <Route path="/home" element={<Api />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

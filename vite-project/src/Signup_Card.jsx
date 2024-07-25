@@ -15,7 +15,7 @@ const Signup_Card = () => {
   const handleCardClick = () => {
     setIsFormVisible(true);
   };
-  
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -98,7 +98,8 @@ const Signup_Card = () => {
             />
           </label>
           <label>
-            Money Amount:
+            <p> </p>
+            What is your maximum price?:
             <input
               type="number"
               name="moneyAmount"

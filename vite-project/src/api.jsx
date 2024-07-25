@@ -2,20 +2,21 @@ import React, { useState, useContext, useEffect } from 'react';
 import Loading from './Loading';
 import Taskbar from './Taskbar';
 import { UserContext } from './UserContext';
-function Yes() {
+function Api() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [categories, setCategories] = useState();
   const [moneyMax, setMoneyMax] = useState(0.0);
-  const scoredItems = [];
   const updateUser = (newUser) => {
     setUser(newUser);
   };
 
   const { user } = useContext(UserContext);
   let moneyData;
-  let oneCategory;
   useEffect(() => {
+    if (user == null) {
+      return;
+    }
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:3000/getcat', {
@@ -26,25 +27,25 @@ function Yes() {
         const data = await response.json();
         setData(data);
         setCategories(data.categories);
+        // Make a second request to get the moneymax value
+        const moneyResponse = await fetch('http://localhost:3000/getmoney', {
+          method: 'POST',
+          body: JSON.stringify({ name: user }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const moneyData = await moneyResponse.json();
         // Loop through all the categories
-        data.categories.forEach(async (category) => {
-          // Make a second request to get the moneymax value
-          const moneyResponse = await fetch('http://localhost:3000/getmoney', {
-            method: 'POST',
-            body: JSON.stringify({ name: user }),
-            headers: { 'Content-Type': 'application/json' }
-          });
-          const moneyData = await moneyResponse.json();
+        const request = data.categories.map(async (category) => {
           // Make a request to the Walmart API for this category
           const url = `https://api.ecommerceapi.io/walmart_search?api_key=669599d40eca9387990d6162&url=https://www.walmart.com/search?query=${category}&sort=rating_desc&limit=20&points_4_star_rating=2&points_free_shipping=1`;
-          fetch(url)
+          return fetch(url)
             .then((response) => response.json())
             .then((data) => {
               const items = data.search_results[0].item;
-              console.log(items);
+              const scoredItems = [];
               items.forEach(item => {
                 if (item.current_price !== undefined) {
-                  const currentPrice = item.current_price.match(/\d+(\.\d+)?/)[0];
+                  const currentPrice = item.current_price.match(/\d+(?:\.\d+)?/)[0];
                   if (currentPrice < moneyData) {
                     let totalScore = 0;
                     if (item.availability_status === "In stock") {
@@ -70,26 +71,52 @@ function Yes() {
                   }
                 }
               });
-              scoredItems.sort((a, b) => b.total_score - a.total_score);
-              setData(scoredItems);
-              setLoading(false);
+              return scoredItems.sort((a, b) => b.total_score - a.total_score);
             })
             .catch((error) => {
               console.log(error);
               setLoading(false);
             });
         });
+        Promise.all(request).then(items => {
+          setLoading(false);
+          setData(items.flat().filter(item => item != null))
+        })
       } catch (error) {
         console.error(error);
       }
     };
     fetchData(); // Call the fetchData function
   }, [user]);
+
   if (loading) {
     return <Loading />;
   }
+
+  function getTopBundles(stuff, budget) {
+    stuff.sort((a, b) => b.total_score - a.total_score);
+    const bundles = [];
+    let remainingBudget = budget;
+    for (const item of stuff) {
+      for (let i = 0; i < bundles.length; i++) {
+        const bundle = bundles[i];
+        if (item.price <= remainingBudget && bundle.items.length < 3) {
+          bundle.items.push(item);
+          remainingBudget -= item.price;
+          break;
+        }
+      }
+      if (!bundles.some(bundle => bundle.items.includes(item))) {
+        bundles.push({ items: [item], totalPrice: item.price });
+        remainingBudget = budget - item.price;
+      }
+    }
+    console.log(bundles.slice(0, 3));
+  }
+
   const items = Array.isArray(data) ? data : [data];
-  console.log(items)
+
+  getTopBundles(items, moneyData)
   return (
     <div>
       <Taskbar />
@@ -105,6 +132,15 @@ function Yes() {
               }}
               onMouseOut={(e) => {
                 e.target.style.cursor = 'default';
+              }}
+              onWheel={(e) => {
+                const image = e.target;
+                const currentScale = image.style.transform || 'scale(1)';
+                const originalScale = parseFloat(currentScale.replace('scale(', ''));
+                const newScale = parseFloat(currentScale.replace('scale(', '')) + (e.deltaY > 0 ? -0.1 : 0.1);
+                if (newScale > originalScale * 2) {
+                  newScale = originalScale * 2;
+                }
               }}
             />
             <div className="details">
@@ -124,6 +160,7 @@ function Yes() {
       </div>
     </div>
   )
+
 }
 
-export default Yes;
+export default Api;
