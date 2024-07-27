@@ -68,6 +68,13 @@ button {
   width: 100%;
 }
 
+.new-button-style {
+  position: relative;
+  bottom: 150px;
+  right: 0;
+  background-color: red; /* Add your desired styles here */
+}
+
 /* Add a hover effect for buttons */
 button:hover {
   opacity: 0.8;

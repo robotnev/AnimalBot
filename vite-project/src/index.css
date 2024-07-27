@@ -133,6 +133,26 @@ h1 {
   line-height: 1.1;
 }
 
+.new-button-style {
+  background-color: black;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-button-style1 {
+  background-color: purple;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 
 button {
   border-radius: 8px;

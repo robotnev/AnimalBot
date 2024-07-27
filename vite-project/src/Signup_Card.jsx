@@ -28,7 +28,7 @@ const Signup_Card = () => {
         } else {
           const categories = [];
           for (const category of [
-            { name: 'Electronics', value: formData.category1 },
+            { name: 'Gaming', value: formData.category1 },
             { name: 'Jewelery', value: formData.category2 },
             { name: 'Women Clothering', value: formData.category3 },
             { name: 'Men Clothing', value: formData.category4 },

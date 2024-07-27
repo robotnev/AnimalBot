@@ -1,13 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from './UserContext';
 const Taskbar = () => {
-  const [coinAmount, setCoinAmount] = useState(0);
-  const handleCoinChange = (event) => {
-    setCoinAmount(event.target.value);
-  };
-  const saveCoinAmount = () => {
-    localStorage.setItem('coinAmount', coinAmount);
-  };
+
   const {user} = useContext(UserContext);
   const logout = () => {
     localStorage.removeItem('user');

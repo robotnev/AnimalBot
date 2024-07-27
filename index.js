@@ -54,8 +54,8 @@ app.post("/create", async (req, res) => {
     return res.status(400).json({ error: "Invalid request" });
   }
   const newPassword = await bcrypt.hash(password, saltRounds);
-  const who = await(moneyAmount); // use the moneyAmount value from the request body
-  const amount = parseFloat(who);
+  const form_money= moneyAmount; // use the moneyAmount value from the request body
+  const amount = parseFloat(form_money);
   // Create a new user
   try {
 
@@ -67,7 +67,6 @@ app.post("/create", async (req, res) => {
         dollars: amount
       }
     });
-    console.log(newUser);
     res.status(201).json({});
   } catch (error) {
     console.error(error);
@@ -129,7 +128,7 @@ app.post("/getcat", async (req, res) => {
   const userRecord = await prisma.user.findFirst({
     where: { name }
   });
-  // Choose a random category
+
   const categories = userRecord.categories;
   res.status(200).json({ categories });
 });
