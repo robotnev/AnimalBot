@@ -1,65 +1,42 @@
-import './App.css'
-import { useState } from 'react';
-import './index.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Signup_Card from './Signup_Card';
+import Login_Card from './Login_Card';
+import Api from './api';
+import { UserContext } from './UserContext';
+import Taskbar from './Taskbar';
+
 function App() {
-  const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [result, setResult] = useState('');
+  const [user, setUser] = useState(() => {
+    // Retrieve the user data from storage or set it to null if not found
+    const storedUser = localStorage.getItem('user');
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  const handleChangeUser = (e) => {
-    setUser(e.target.value);
+  const updateUser = (newUser) => {
+    setUser(newUser);
   };
 
-  const handleChangePassword = (e) => {
-    setPassword(e.target.value);
-  };
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+  }, [user]);
 
-  const handleCreate = () => {
-    fetch(`${DATABASE_URL}/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user,
-        password,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setResult('create success!');
-          <button onClick={handleCreate}>Create</button>
-        } else {
-          setResult('failed to create!');
-        }
-      })
-      .catch((error) => {
-        setResult(`Error: ${error.message}`);
-      });
-  };
-
-  const handleLogin = () => {
-    fetch(`${import.meta.env.VITE_BACKEND_ADDRESS}/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user,
-        password,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          setResult('login!');
-        } else {
-          setResult('failed to login!');
-        }
-      })
-      .catch((error) => {
-        setResult(`Error: ${error.message}`);
-      });
-  };
-
+  return (
+    <UserContext.Provider value={{ user, updateUser }}>
+      <BrowserRouter>
+        <Taskbar />
+        <Routes>
+          <Route path="/" element={<div className="cards">
+            <Signup_Card className="card" />
+            <Login_Card className="card" />
+          </div>} />
+          <Route path="/home" element={<Api />} />
+        </Routes>
+      </BrowserRouter>
+    </UserContext.Provider>
+  );
 }
+
 export default App;

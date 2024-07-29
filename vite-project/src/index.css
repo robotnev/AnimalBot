@@ -13,30 +13,116 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.grid-container {
+  display: grid;
+  z-index: 3;
+  margin-top: 60px;
+  /* Add this line */
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  background-color: white;
+}
+
+.grid-item {
+  padding: 50px;
+  border: 15px solid pink;
+  position: relative;
+}
+
+.grid-item:hover .details {
+  display: block;
+  /* Change display to block to show the details */
+}
+
+
+.details {
+  /* Add a lower z-index value for the grid items */
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 55%;
+  width: 40%;
+  height: 40%;
+  font-style: bold;
+  color: black;
+  padding: 10px;
+}
+
+.details {
+  /* Add a lower z-index value for the grid items */
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 55%;
+  width: 40%;
+  height: 40%;
+  font-style: bold;
+  color: black;
+  padding: 10px;
+}
+
+
+
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
 
-.card {
-  background-color: #fff;
-  border: 1px solid black;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.categories {
+  display: grid;
+  gap: 10px;
 }
 
-.card-body {
-  padding: 20px;
+.cards {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slide-in 2.5s forwards;
+}
+
+@keyframes slide-in {
+  from {
+    left: -80%;
+  }
+
+  to {
+    left: 50%;
+  }
+}
+
+.user {
+  font-weight: bold;
+  font-size: 22px;
+  position: absolute;
+  top: 25%;
+}
+
+.card {
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid black;
+  padding: 150px;
+  width: 125px;
+  height: 125px;
+  margin: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  font-size: 16px;
+
 }
 
 body {
   margin: 0;
   display: flex;
+  background-color: pink;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -45,6 +131,27 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+.new-button-style {
+  background-color: black;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-button-style1 {
+  background-color: purple;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 button {
@@ -56,14 +163,61 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
+  background-color: white;
   transition: border-color 0.25s;
 }
+
+.taskbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: grey;
+  color: #fff;
+  font-family: inherit;
+  font-size: large;
+  display: center;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 9999;
+
+}
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.loader {
+  align-items: center;
+  border: 16px solid white;
+  border-top: 16px solid grey;
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  border-bottom: 16px solid grey;
+  animation: spin 2s linear infinite;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -71,10 +225,10 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
-  button {
-    background-color: #f9f9f9;
-  }
+
+
 }
